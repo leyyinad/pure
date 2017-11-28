@@ -126,6 +126,13 @@ prompt_pure_preprompt_render() {
 	# Execution time.
 	[[ -n $prompt_pure_cmd_exec_time ]] && preprompt_parts+=('%F{yellow}${prompt_pure_cmd_exec_time}%f')
 
+    if [[ -n $DOCKER_MACHINE_NAME || -n $X_COMPOSE_PROFILE || -n $COMPOSE_PROJECT_NAME ]]; then
+      preprompt_parts+=('🐳 ')
+      [[ -n $DOCKER_MACHINE_NAME ]] && preprompt_parts+=('%F{75}${DOCKER_MACHINE_NAME%%.*}%f')
+      [[ -n $X_COMPOSE_PROFILE ]] && preprompt_parts+=('%F{193}$X_COMPOSE_PROFILE%f')
+      [[ -n $COMPOSE_PROJECT_NAME ]] && preprompt_parts+=('%F{17}$COMPOSE_PROJECT_NAME%f')
+    fi
+
 	local cleaned_ps1=$PROMPT
 	local -H MATCH MBEGIN MEND
 	if [[ $PROMPT = *$prompt_newline* ]]; then
